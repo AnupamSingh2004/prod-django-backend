@@ -87,11 +87,24 @@ DATABASES = {
     )
 }
 
-# Azure PostgreSQL SSL Configuration
+# Azure PostgreSQL SSL Configuration and Connection Optimization
 if 'azure' in config('DATABASE_URL', default='').lower():
     DATABASES['default']['OPTIONS'] = {
         'sslmode': 'require',
+        'connect_timeout': 60,
+        'options': '-c statement_timeout=30000',  # 30 seconds
     }
+    DATABASES['default']['CONN_MAX_AGE'] = 0  # Don't persist connections
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
+
+# Additional database timeout settings for Azure PostgreSQL
+if 'postgres' in config('DATABASE_URL', default=''):
+    DATABASES['default']['OPTIONS'] = DATABASES['default'].get('OPTIONS', {})
+    DATABASES['default']['OPTIONS'].update({
+        'connect_timeout': 60,
+        'options': '-c statement_timeout=30000 -c lock_timeout=30000 -c idle_in_transaction_session_timeout=30000'
+    })
+    DATABASES['default']['CONN_MAX_AGE'] = 0
 
 
 # Password validation
