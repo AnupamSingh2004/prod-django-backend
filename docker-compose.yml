@@ -10,12 +10,13 @@ services:
     environment:
       - DEBUG=1
       - SECRET_KEY=your-secret-key-here
-      # Use Azure PostgreSQL (update with your actual credentials)
-      - DATABASE_URL=postgresql://username:password@your-azure-postgres-server.postgres.database.azure.com:5432/your-database-name?sslmode=require
-    # Removed dependency on local db since we're using Azure PostgreSQL
+      # Use your actual Azure PostgreSQL credentials (URL-encoded password)
+      - DATABASE_URL=postgresql://postgres:Test%40123@django-postgres-server-1755601473.postgres.database.azure.com:5432/django_db?sslmode=require
+    # No local db dependency since we're using Azure PostgreSQL
 
-# Optional: Local PostgreSQL for development (commented out since using Azure)
-# Uncomment this section if you want to test with local PostgreSQL
+# Note: Local PostgreSQL service removed since we're using Azure PostgreSQL
+# If you want to test with local PostgreSQL, uncomment the section below:
+#
 #  db:
 #    image: postgres:15
 #    volumes:
@@ -26,6 +27,6 @@ services:
 #      - POSTGRES_PASSWORD=postgres
 #    ports:
 #      - "5432:5432"
-
-#volumes:
-#  postgres_data:
+#
+# volumes:
+#   postgres_data:

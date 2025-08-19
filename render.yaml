@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: django-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    branch: main
+    healthCheckPath: /health/
+    numInstances: 1
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "django-backend.onrender.com"
+      - key: DATABASE_URL
+        value: "postgresql://username:password@your-azure-postgres-server.postgres.database.azure.com:5432/your-database-name?sslmode=require"
+    autoDeploy: true
