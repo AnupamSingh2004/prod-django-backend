@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=your-secret-key-here
+      # Use Azure PostgreSQL (update with your actual credentials)
+      - DATABASE_URL=postgresql://username:password@your-azure-postgres-server.postgres.database.azure.com:5432/your-database-name?sslmode=require
+    # Removed dependency on local db since we're using Azure PostgreSQL
+
+# Optional: Local PostgreSQL for development (commented out since using Azure)
+# Uncomment this section if you want to test with local PostgreSQL
+#  db:
+#    image: postgres:15
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_DB=myproject
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=postgres
+#    ports:
+#      - "5432:5432"
+
+#volumes:
+#  postgres_data:
